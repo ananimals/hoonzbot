@@ -53,8 +53,7 @@ bot.init = function(){
 bot.login = function(){
     new plugapi({
         "email": bot.email,
-        "password": bot.password,
-        "room": bot.room
+        "password": bot.password
     }, function(api){
         bot.api = api;
     });
