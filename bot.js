@@ -78,6 +78,7 @@ bot.login = function(){
 };
 
 bot.connect = function(){
+    console.log('Which room do you want the bot to join?');
     prompt.get(room_schema, function(err, result){
         if(err){ console.log(err); return; }
         
