@@ -48,7 +48,7 @@ bot.login = function(){
     process.stdout.write('Connecting');
     
     (function check(){
-        if(bot.api !== typeof object){
+        if(bot.api === undefined){
             if(i++ < 10){
                 process.stdout.write('.');
                 setTimeout(check, 1000);
@@ -63,7 +63,7 @@ bot.login = function(){
 };
 
 bot.connect = function(){
-    
+    console.log('\nLogged in!');
 };
 
 prompt.start();
