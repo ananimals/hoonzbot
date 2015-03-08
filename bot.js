@@ -20,6 +20,15 @@ var credentials_schema = {
     }
 };
 
+var room_schema = {
+    properties: {
+        room: {
+            description: 'Room:'.cyan.bold,
+            required: true
+        }
+    }
+};
+
 var bot = {};
 
 bot.init = function(){
@@ -63,7 +72,13 @@ bot.login = function(){
 };
 
 bot.connect = function(){
-    console.log('\nYou has been LOGGED IN bitch!');
+    prompt.get(room_schema, function(err, result){
+        if(err){ console.log(err); return; }
+        
+        bot.room = result.roomd;
+        
+        bot.api.connect(result.room);
+    });
 };
 
 prompt.start();
