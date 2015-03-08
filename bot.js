@@ -16,6 +16,11 @@ var credentials_schema = {
             description: 'Password:'.cyan.bold,
             hidden: true,
             required: true
+        },
+        room: {
+            description: 'Room Name:'.cyan.bold,
+            message: 'Please enter a valid room'.red.bold,
+            required: true
         }
     }
 };
@@ -30,6 +35,7 @@ bot.init = function(){
         
         bot.email = result.email;
         bot.password = result.password;
+        bot.room = result.room;
         
         bot.login();
     });
@@ -38,7 +44,8 @@ bot.init = function(){
 bot.login = function(){
     new plugapi({
         "email": bot.email,
-        "password": bot.password
+        "password": bot.password,
+        "room": bot.room
     }, function(api){
         bot.api = api;
     });
@@ -63,7 +70,7 @@ bot.login = function(){
 };
 
 bot.connect = function(){
-    console.log('\nYou has been LOGGED IN bitch!');
+    console.log('\nLogged In!');
 };
 
 prompt.start();
