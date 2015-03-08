@@ -16,11 +16,6 @@ var credentials_schema = {
             description: 'Password:'.cyan.bold,
             hidden: true,
             required: true
-        },
-        room: {
-            description: 'Room Name:'.cyan.bold,
-            message: 'Please enter a valid room'.red.bold,
-            required: true
         }
     }
 };
@@ -72,20 +67,23 @@ bot.login = function(){
                 bot.init();
             }
         } else {
-            bot.connect();
+            bot.prompt_room();
         }
     })();
 };
 
-bot.connect = function(){
-    console.log('Which room do you want the bot to join?');
+bot.prompt_room = function(){
+    console.log('\nWhich room do you want the bot to join?');
     prompt.get(room_schema, function(err, result){
         if(err){ console.log(err); return; }
         
-        bot.room = result.roomd;
-        
-        bot.api.connect(result.room);
+        bot.room = result.room;
+        bot.connect();
     });
+};
+
+bot.connect = function(){
+    bot.api.connect(bot.room);
 };
 
 prompt.start();
