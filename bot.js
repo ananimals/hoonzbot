@@ -63,7 +63,7 @@ bot.login = function(){
 };
 
 bot.connect = function(){
-    console.log('\nLogged in!');
+    console.log('\nYou has been LOGGED IN bitch!');
 };
 
 prompt.start();
