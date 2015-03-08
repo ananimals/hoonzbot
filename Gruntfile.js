@@ -12,12 +12,14 @@ module.exports = function (grunt) {
             ]
         },
         exec: {
-            build: '(cd node_modules/plugapi; grunt)'
+            build: '(cd node_modules/plugapi; grunt)',
+            setup: '(cd node_modules/plugapi; npm install; cd ..; grunt build)'
         }
     });
     
     grunt.loadNpmTasks('grunt-curl');
     grunt.loadNpmTasks('grunt-exec');
     
-    grunt.registerTask('default', ['curl-dir', 'exec']);
+    grunt.registerTask('build', ['curl-dir', 'exec:build']);
+    grunt.registerTask('default', ['exec:setup']);
 };
