@@ -7,6 +7,7 @@
   "author": "RevanAce",
   "dependencies": {
     "async": "~0.2.8",
+    "colors": "^1.0.3",
     "express": "~3.2.4",
     "grunt": "^0.4.5",
     "grunt-cli": "^0.1.13",
