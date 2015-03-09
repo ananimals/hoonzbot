@@ -67,13 +67,14 @@ bot.login = function(){
                 bot.init();
             }
         } else {
+            process.stdout.write('\n');
             bot.prompt_room();
         }
     })();
 };
 
 bot.prompt_room = function(){
-    console.log('\nWhich room do you want the bot to join?');
+    console.log('Which room do you want the bot to join?');
     prompt.get(room_schema, function(err, result){
         if(err){ console.log(err); return; }
         
