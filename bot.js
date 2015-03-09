@@ -9,7 +9,7 @@ var credentials_schema = {
         email: {
             description: 'Email:'.cyan.bold,
             pattern: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-            message: 'Please enter a valid emailadress'.red.bold,
+            message: 'Please enter a valid email adress'.red.bold,
             required: true
         },
         password: {
