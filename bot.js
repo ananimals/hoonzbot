@@ -29,7 +29,21 @@ var room_schema = {
     }
 };
 
+function bot_join(data){
+    if(data.length > 0){
+        console.log('Bot successfully joined https://plug.dj/' + data);
+    }
+}
+
 var bot = {};
+
+bot.events = Array();
+bot.core_events = [{
+    'event': 'roomJoin',
+    'action': bot_join
+}];
+
+bot.connected = false;                  // Id this is true, the bot is IN the room specified in bot.room; This becomes true on joinRoom
 
 bot.init = function(){
     console.log('Please enter the login credentials for the bot:');
@@ -39,8 +53,7 @@ bot.init = function(){
         
         bot.email = result.email;
         bot.password = result.password;
-        bot.room = result.room;
-        
+
         bot.login();
     });
 };
@@ -69,6 +82,7 @@ bot.login = function(){
         } else {
             process.stdout.write('\n');
             bot.prompt_room();
+            bot.register_events(bot.core_events);
         }
     })();
 };
@@ -78,13 +92,42 @@ bot.prompt_room = function(){
     prompt.get(room_schema, function(err, result){
         if(err){ console.log(err); return; }
         
-        bot.room = result.room;
-        bot.connect();
+        bot.connect(result.room);
     });
 };
 
-bot.connect = function(){
-    bot.api.connect(bot.room);
+bot.connect = function(room){
+    bot.api.connect(room);
+};
+
+bot.hook = function(event, action){
+    bot.api.on(event, action);
+};
+
+bot.unhook = function(event, action){
+    bot.api.off(event, action);
+};
+
+bot.register_events = function(events){
+    var pair, i;
+
+    for (i = 0; i < events.length; i++){
+        pair = events[i];
+        bot.hook(pair["event"], pair["action"]);
+        
+        bot.events.push(events[i]);
+    }
+};
+
+bot.unregister_events = function(events){
+    var pair, i;
+
+    for (i = 0; i < events.length; i++){
+        pair = events[i];
+        bot.unhook(pair["event"], pair["action"]);
+        
+        bot.events.splice(bot.events.indexOf(events[i]), 1);
+    }
 };
 
 prompt.start();
