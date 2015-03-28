@@ -1,5 +1,6 @@
 var prompt = require('prompt');
 var plugapi = require('plugapi');
+var fs = require('fs');
 
 prompt.message = '';
 prompt.delimiter = '';
@@ -29,26 +30,34 @@ var room_schema = {
     }
 };
 
+var modules = Array('test');
+
 function bot_join(data){
     if(data.length > 0){
-        bot.api.sendChat('Hola mi amigos');
         console.log('Bot successfully joined https://plug.dj/' + data);
+    }
+
+    for(var i = 0; i < modules.length; i++){
+        bot.load_module(modules[i]);
+        console.log(modules[i]);
     }
 }
 
 var bot = {};
+var modules = {};
 
 bot.events = Array();
 bot.core_events = [{
     'event': 'roomJoin',
     'action': bot_join
 }];
-
-bot.connected = false;                  // Id this is true, the bot is IN the room specified in bot.room; This becomes true on joinRoom
+bot.connected = false;                  // If this is true, the bot is IN the room specified in bot.room; This becomes true on joinRoom
 
 bot.init = function(){
+    bot.load_module('config');
+
     console.log('Please enter the login credentials for the bot:');
-    
+
     prompt.get(credentials_schema, function(err, result){
         if(err){ console.log(err); return; }
         
@@ -57,6 +66,38 @@ bot.init = function(){
 
         bot.login();
     });
+};
+
+bot.load_json = function(file){
+    var obj = JSON.parse(fs.readFileSync('./json/' + file + '.json', 'utf8'));
+
+    return obj;
+};
+
+bot.load_module = function(module_name){
+    var params = { "bot" : bot };
+
+    modules[module_name] = require("./modules/" + module_name + ".js")(params);
+    modules[module_name].load();
+};
+
+bot.modules_loaded = function(check_modules){
+    for(var module in check_modules){
+        if(!(check_modules[module] in modules)){
+            return false;
+        }
+    }
+    
+    return true; 
+};
+
+bot.unload_module = function(module_name){     // FIXIT AINT WORKING
+    //console.log(core.modules[module_name]);
+    
+    modules[module_name].unload();
+    delete modules[module_name];
+    
+    console.log("Module: " + module_name + " unloaded.");
 };
 
 bot.login = function(){
