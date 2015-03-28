@@ -31,6 +31,7 @@ var room_schema = {
 
 function bot_join(data){
     if(data.length > 0){
+        bot.api.sendChat('Hola mi amigos');
         console.log('Bot successfully joined https://plug.dj/' + data);
     }
 }
